@@ -2,7 +2,7 @@
 
 Braincache is a game designed to test your working memory. It's simple in concept - just click on words you haven't seen before - but it provides a neat challenge.
 
-This version was created simply with HTML. CSS, JavScript & jQuery, but I also made the game with:
+This version was created simply with HTML. CSS, JavScript & jQuery, but I also made alternative versions of the game using:
 
 - React (click [here](https://github.com/repercussive/braincache-react))
 - Vue (click [here](https://github.com/repercussive/braincache-vue))
