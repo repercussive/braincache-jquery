@@ -1,8 +1,8 @@
 import { gameStatus } from './_constants'
 import allWords from './resources/words'
 import saveScore from './saveScore'
-import getRandomArrayItem from './util/getRandomArrayItem'
-import shuffleArray from './util/shuffleArray'
+import getRandomArrayItem from './helpers/getRandomArrayItem'
+import shuffleArray from './helpers/shuffleArray'
 
 export class GameManager {
   score = 0
