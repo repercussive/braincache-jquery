@@ -19,7 +19,7 @@ export class GameManager {
 
   constructor(events) {
     this.events = {
-      onGenerateLevel: events?.onGenerateLevel ?? noop,
+      onGenerateNextLevel: events?.onGenerateNextLevel ?? noop,
       onSubmitAnswer: events?.onSubmitAnswer ?? noop,
       onGameEnd: events?.onGameEnd ?? noop,
       onChangeStatus: events?.onChangeStatus ?? noop,
@@ -27,14 +27,14 @@ export class GameManager {
       onLoseLife: events?.onLoseLife ?? noop,
       onGameEnd: events?.onGameEnd ?? noop
     }
-    this.levelData = this.generateLevel()
+    this.generateNextLevel()
   }
 
-  get hasGameEnded() {
+  get readyToEndGame() {
     return this.lives === 0 || this.#unseenWords.length === 0
   }
 
-  generateLevel = () => {
+  generateNextLevel = () => {
     this.#setStatus(gameStatus.AWAIT_USER_ANSWER)
     const correctAnswer = this.#pickRandomUnseenWord()
     const incorrectOptions = this.#pickRandomSeenWords()
@@ -46,7 +46,7 @@ export class GameManager {
       correctAnswer
     }
 
-    this.events.onGenerateLevel(this)
+    this.events.onGenerateNextLevel(this)
     return this.levelData
   }
 
@@ -68,7 +68,7 @@ export class GameManager {
   }
 
   endGame = () => {
-    if (this.hasGameEnded === false) return
+    if (this.readyToEndGame === false) return
     saveScore(this.score)
     this.events.onGameEnd(this)
   }

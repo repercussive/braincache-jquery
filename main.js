@@ -20,7 +20,7 @@ function startGame() {
   $('#app').html(gameScreen)
 
   new GameManager({
-    onGenerateLevel: handleGenerateLevel,
+    onGenerateNextLevel: handleGenerateNextLevel,
     onSubmitAnswer: handleSubmitAnswer,
     onChangeStatus: handleChangeStatus,
     onChangeScore: handleChangeScore,
@@ -29,7 +29,7 @@ function startGame() {
   })
 }
 
-function handleGenerateLevel(gameManager) {
+function handleGenerateNextLevel(gameManager) {
   $('.word-button').attr('data-animation', 'enter')
 
   gameManager.levelData.options.forEach((word, index) => {
@@ -45,22 +45,23 @@ async function handleSubmitAnswer(gameManager) {
   const isCorrectAnswer = gameManager.status === gameStatus.CORRECT_ANSWER
   const selectedButton = findWordButtonByTextContent(gameManager.lastSubmittedAnswer)
 
+  $('.word-button').attr('disabled', 'true')
+
   selectedButton.removeAttr('data-animation')
   selectedButton.attr('data-variant', isCorrectAnswer ? 'correct' : 'incorrect')
-  $('.word-button').attr('disabled', 'true')
 
   if (isCorrectAnswer === false) {
     findWordButtonByTextContent(gameManager.levelData.correctAnswer).attr('data-variant', 'missed')
   }
 
-  await sleep(gameManager.status === gameStatus.CORRECT_ANSWER ? 750 : 1600)
+  await sleep(isCorrectAnswer ? 750 : 1600)
   $('.word-button').attr('data-animation', 'exit')
 
   await sleep(400)
-  if (gameManager.hasGameEnded) {
+  if (gameManager.readyToEndGame) {
     gameManager.endGame()
   } else {
-    gameManager.generateLevel()
+    gameManager.generateNextLevel()
   }
 }
 
@@ -91,6 +92,7 @@ function handleLoseLife(gameManager) {
 
 function handleGameEnd(gameManager) {
   $('#app').html(endScreen)
+
   $('.inline-score').text(gameManager.score)
   if (gameManager.score === (Number(localStorage.getItem('highScore')) ?? 0)) {
     $('#score-label').text('High score!')
