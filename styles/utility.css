@@ -1,0 +1,61 @@
+:root {
+  --space-unit: 0.25rem;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.mb-1 {
+  margin-bottom: var(--space-unit);
+}
+
+.mb-2 {
+  margin-bottom: calc(var(--space-unit) * 2)
+}
+
+.mb-3 {
+  margin-bottom: calc(var(--space-unit) * 3)
+}
+
+.mb-4 {
+  margin-bottom: calc(var(--space-unit) * 4)
+}
+
+.mb-5 {
+  margin-bottom: calc(var(--space-unit) * 5)
+}
+
+.mb-6 {
+  margin-bottom: calc(var(--space-unit) * 6)
+}
+
+.mb-7 {
+  margin-bottom: calc(var(--space-unit) * 7)
+}
+
+.mb-8 {
+  margin-bottom: calc(var(--space-unit) * 8)
+}
+
+.pr-1 {
+  padding-right: var(--space-unit);
+}
+
+.pt-1 {
+  padding-top: var(--space-unit);
+}
+
+.pb-1 {
+  padding-bottom: var(--space-unit);
+}
+
+.pl-1 {
+  padding-left: var(--space-unit);
+}
