@@ -24,7 +24,8 @@ export class GameManager {
       onGameEnd: events?.onGameEnd ?? noop,
       onChangeStatus: events?.onChangeStatus ?? noop,
       onChangeScore: events?.onChangeScore ?? noop,
-      onLoseLife: events?.onLoseLife ?? noop
+      onLoseLife: events?.onLoseLife ?? noop,
+      onGameEnd: events?.onGameEnd ?? noop
     }
     this.levelData = this.generateLevel()
   }
@@ -66,9 +67,10 @@ export class GameManager {
     this.events.onSubmitAnswer(this)
   }
 
-  handleGameEnd = () => {
+  endGame = () => {
     if (this.hasGameEnded === false) return
     saveScore(this.score)
+    this.events.onGameEnd(this)
   }
 
   #setStatus = (newStatus) => {

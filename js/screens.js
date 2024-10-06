@@ -1,35 +1,3 @@
-export const welcomeScreen = `
-<div class="screen">
-<header class="flex-center flex-column">
-  <span aria-hidden="true">🧠</span>
-  <h1>brain<span>cache</span></h1>
-</header>
-<div class="mb-4"></div>
-<div class="text-box">
-  <p>How many words can you hold in your head?</p>
-</div>
-<div class="mb-7"></div>
-<p>
-  <span class="pr-1">Your best score:</span>
-  <span id="high-score-display">?</span>
-</p>
-<div class="mb-7"></div>
-<div id="rules" class="text-box accent">
-  <ul>
-    <li>Words will appear on the screen.</li>
-    <li>Select the one you haven't seen.</li>
-    <li>
-      Don't select any words that you've seen before, or you'll lose a
-      life.
-    </li>
-    <li>Most people score somewhere between 50 and 200.</li>
-  </ul>
-</div>
-<div class="mb-6"></div>
-<button id="start-game-button"><span class="front">Start</span></button>
-</div>
-`
-
 export const gameScreen = `
 <div class="screen">
 <p>Score</p>
@@ -92,3 +60,19 @@ export const gameScreen = `
 <div class="mb-8"></div>
 <p id="game-status-text" class="text-box">Select the new word.</p>
 </div>`
+
+export const endScreen = `
+<div class="screen">
+<p aria-hidden style="font-size: 1.5rem">👏</p>
+<div class="mb-4"></div>
+<div class="text-box accent">That's a wrap!</div>
+<div class="mb-7"></div>
+<p><span id="score-label" class="pr-2">Your score:</span><span id="score" class="inline-score">?</span></p>
+<div class="mb-8"></div>
+<button id="play-again-button">
+  <span class="front">Play again</span>
+</button>
+<div class="mb-4"></div>
+<button id="home-button"><span class="front">Home</span></button>
+</div>
+`

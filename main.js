@@ -1,13 +1,20 @@
 import $ from 'jquery'
-import { gameScreen } from './js/screens'
+import { endScreen, gameScreen } from './js/screens'
 import { GameManager } from './js/gameManager'
 import { gameStatus } from './js/_constants'
 import sleep from './js/helpers/sleep'
 
+let welcomeScreen
+
 $(() => {
-  $('#high-score-display').text(localStorage.getItem('highScore') || 0)
-  $('#start-game-button').on('click', startGame)
+  welcomeScreen = $('#app').html()
+  setupWelcomeScreen()
 })
+
+function setupWelcomeScreen() {
+  $('.inline-score').text(localStorage.getItem('highScore') || 0)
+  $('#start-game-button').on('click', startGame)
+}
 
 function startGame() {
   $('#app').html(gameScreen)
@@ -17,7 +24,8 @@ function startGame() {
     onSubmitAnswer: handleSubmitAnswer,
     onChangeStatus: handleChangeStatus,
     onChangeScore: handleChangeScore,
-    onLoseLife: handleLoseLife
+    onLoseLife: handleLoseLife,
+    onGameEnd: handleGameEnd
   })
 }
 
@@ -50,7 +58,7 @@ async function handleSubmitAnswer(gameManager) {
 
   await sleep(400)
   if (gameManager.hasGameEnded) {
-    gameManager.handleGameEnd()
+    gameManager.endGame()
   } else {
     gameManager.generateLevel()
   }
@@ -79,6 +87,20 @@ function handleLoseLife(gameManager) {
   $('.life').eq(gameManager.lives)
     .find('svg').first()
     .css({ animation: 'lose-life forwards 400ms' })
+}
+
+function handleGameEnd(gameManager) {
+  $('#app').html(endScreen)
+  $('.inline-score').text(gameManager.score)
+  if (gameManager.score === (Number(localStorage.getItem('highScore')) ?? 0)) {
+    $('#score-label').text('High score!')
+  }
+
+  $('#play-again-button').on('click', startGame)
+  $('#home-button').on('click', () => {
+    $('#app').html(welcomeScreen)
+    setupWelcomeScreen()
+  })
 }
 
 function findWordButtonByTextContent(word) {

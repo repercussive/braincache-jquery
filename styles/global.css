@@ -92,7 +92,7 @@ header {
   }
 }
 
-#high-score-display {
+.inline-score {
   padding: calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 4);
   background-color: var(--color-accent);
   border-radius: var(--radius-default);
