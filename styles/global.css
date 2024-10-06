@@ -13,6 +13,7 @@
   --color-button-border: #7d8c8d;
   --color-button-bg: #272929;
   --color-button-border-highlight: #d7e9ea;
+  --color-word-empty-border: #495151;
   --color-word-correct-border: #72d672;
   --color-word-correct-bg: #244224;
   --color-word-incorrect-border: #e08383;
@@ -38,10 +39,11 @@ body {
   }
 }
 
-#app {
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: fade-in forwards 300ms;
 }
 
 header {
@@ -90,13 +92,26 @@ header {
   }
 }
 
-.score-display {
+#high-score-display {
   padding: calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 4);
   background-color: var(--color-accent);
   border-radius: var(--radius-default);
 }
 
-.rules {
+#ingame-score-display {
+  overflow: hidden;
+  padding-block: calc(var(--space-unit) * 2);
+  width: 4rem;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-default);
+  text-align: center;
+
+  span {
+    display: block;
+  }
+}
+
+#rules {
   max-width: 20.5em;
 
   li {
@@ -104,6 +119,74 @@ header {
   }
 }
 
+#lives-container {
+  display: flex;
+  gap: calc(var(--space-unit) * 1);
+}
+
+.life {
+  position: relative;
+}
+
+#word-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--space-unit) * 4);
+}
+
+.word-button {
+  min-width: 5rem;
+
+  &[data-variant=correct] {
+    pointer-events: none;
+    --color-button-border: var(--color-word-correct-border);
+    --color-button-bg: var(--color-word-correct-bg);
+
+    .front {
+      position: relative;
+      animation: turn-green forwards 450ms ease-in;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        border-radius: calc(var(--radius-default) - 3px);
+        animation: correct-wipe forwards 450ms;
+        z-index: -1;
+      }
+    }
+  }
+
+  &[data-variant=incorrect] {
+    pointer-events: none;
+    --color-button-border: var(--color-word-incorrect-border) !important;
+    --color-button-bg: var(--color-word-incorrect-bg);
+    animation: shakeX forwards 500ms;
+  }
+
+  &[data-variant=missed] {
+    pointer-events: none;
+    --color-button-border: var(--color-word-missed-border);
+    --color-button-bg: var(--color-word-missed-bg);
+  }
+
+  &[data-variant=empty] {
+    --color-button-border: var(--color-word-empty-border);
+  }
+
+  &[data-animation=enter] {
+    animation: slide-in forwards 400ms;
+  }
+
+  &[data-animation=exit] {
+    animation: slide-out forwards 400ms;
+  }
+}
+
+#game-status-text {
+  width: 15rem;
+}
 
 button {
   cursor: pointer;

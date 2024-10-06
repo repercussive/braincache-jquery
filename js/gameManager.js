@@ -1,4 +1,4 @@
-import { gameStatus } from './_constants'
+import { gameStatus, noop } from './_constants'
 import allWords from './resources/words'
 import saveScore from './saveScore'
 import getRandomArrayItem from './helpers/getRandomArrayItem'
@@ -8,6 +8,8 @@ export class GameManager {
   score = 0
   lives = 3
   status = gameStatus.AWAIT_USER_ANSWER
+  events = {}
+  lastSubmittedAnswer = null
 
   /** @type {LevelData} */
   levelData
@@ -15,7 +17,15 @@ export class GameManager {
   #unseenWords = allWords
   #seenWords = []
 
-  constructor() {
+  constructor(events) {
+    this.events = {
+      onGenerateLevel: events?.onGenerateLevel ?? noop,
+      onSubmitAnswer: events?.onSubmitAnswer ?? noop,
+      onGameEnd: events?.onGameEnd ?? noop,
+      onChangeStatus: events?.onChangeStatus ?? noop,
+      onChangeScore: events?.onChangeScore ?? noop,
+      onLoseLife: events?.onLoseLife ?? noop
+    }
     this.levelData = this.generateLevel()
   }
 
@@ -24,7 +34,7 @@ export class GameManager {
   }
 
   generateLevel = () => {
-    this.status = gameStatus.AWAIT_USER_ANSWER
+    this.#setStatus(gameStatus.AWAIT_USER_ANSWER)
     const correctAnswer = this.#pickRandomUnseenWord()
     const incorrectOptions = this.#pickRandomSeenWords()
     const options = [correctAnswer, ...incorrectOptions]
@@ -35,10 +45,12 @@ export class GameManager {
       correctAnswer
     }
 
+    this.events.onGenerateLevel(this)
     return this.levelData
   }
 
   submitAnswer = (answer) => {
+    this.lastSubmittedAnswer = answer
     const { correctAnswer } = this.levelData
     const isCorrect = answer === correctAnswer
     if (!this.#seenWords.includes(correctAnswer)) {
@@ -50,6 +62,18 @@ export class GameManager {
     } else {
       this.#handleIncorrectAnswer()
     }
+
+    this.events.onSubmitAnswer(this)
+  }
+
+  handleGameEnd = () => {
+    if (this.hasGameEnded === false) return
+    saveScore(this.score)
+  }
+
+  #setStatus = (newStatus) => {
+    this.status = newStatus
+    this.events.onChangeStatus(this)
   }
 
   #pickRandomUnseenWord = () => {
@@ -63,19 +87,15 @@ export class GameManager {
     return this.#seenWords.slice(0, Math.min(this.#seenWords.length, 2))
   }
 
-  handleGameEnd = () => {
-    if (this.hasGameEnded === false) return
-    this.status = gameStatus.GAME_END
-    saveScore(this.score)
-  }
-
   #handleCorrectAnswer = () => {
-    this.status = gameStatus.CORRECT_ANSWER
+    this.#setStatus(gameStatus.CORRECT_ANSWER)
     this.score += 1
+    this.events.onChangeScore(this)
   }
 
   #handleIncorrectAnswer = () => {
-    this.status = gameStatus.INCORRECT_ANSWER
+    this.#setStatus(gameStatus.INCORRECT_ANSWER)
     this.lives -= 1
+    this.events.onLoseLife(this)
   }
 }

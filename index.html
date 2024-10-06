@@ -5,42 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Braincache</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/animations.css" />
     <link rel="stylesheet" href="styles/utility.css" />
     <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/global.css" />
   </head>
   <body>
     <div id="app">
-      <header class="flex-center flex-column">
-        <span aria-hidden="true">🧠</span>
-        <h1>brain<span>cache</span></h1>
-      </header>
-      <div class="mb-4"></div>
-      <div class="text-box">
-        <p>How many words can you hold in your head?</p>
+      <div class="screen">
+        <header class="flex-center flex-column">
+          <span aria-hidden="true">🧠</span>
+          <h1>brain<span>cache</span></h1>
+        </header>
+        <div class="mb-4"></div>
+        <div class="text-box">
+          <p>How many words can you hold in your head?</p>
+        </div>
+        <div class="mb-7"></div>
+        <p>
+          <span class="pr-1">Your best score:</span>
+          <span id="high-score-display">?</span>
+        </p>
+        <div class="mb-7"></div>
+        <div id="rules" class="text-box accent">
+          <ul>
+            <li>Words will appear on the screen.</li>
+            <li>Select the one you haven't seen.</li>
+            <li>
+              Don't select any words that you've seen before, or you'll lose a
+              life.
+            </li>
+            <li>Most people score somewhere between 50 and 200.</li>
+          </ul>
+        </div>
+        <div class="mb-6"></div>
+        <button id="start-game-button"><span class="front">Start</span></button>
       </div>
-
-      <div class="mb-7"></div>
-      <p>
-        <span class="pr-1">Your best score:</span>
-        <span class="score-display">?</span>
-      </p>
-      <div class="mb-7"></div>
-
-      <div class="text-box accent rules">
-        <ul>
-          <li>Words will appear on the screen.</li>
-          <li>Select the one you haven't seen.</li>
-          <li>
-            Don't select any words that you've seen before, or you'll lose a
-            life.
-          </li>
-          <li>Most people score somewhere between 50 and 200.</li>
-        </ul>
-      </div>
-
-      <div class="mb-6"></div>
-      <button><span class="front">Start</span></button>
     </div>
     <script type="module" src="/main.js"></script>
   </body>

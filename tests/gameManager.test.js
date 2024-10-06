@@ -1,5 +1,5 @@
 import { gameStatus } from '../js/_constants'
-import { GameManager } from '../js/GameManager'
+import { GameManager } from '../js/gameManager'
 import allWords from '../js/resources/words'
 
 /** @type {GameManager} */
@@ -107,6 +107,11 @@ describe('submitting answers', () => {
     // should have 1 life remaining
     expect(gameManager.lives).toBe(1)
   })
+
+  test('after an answer is submitted, it is registered as the last-selected answer', () => {
+    gameManager.submitAnswer('abracadabra')
+    expect(gameManager.lastSubmittedAnswer).toBe('abracadabra')
+  })
 })
 
 describe('checking if game has ended', () => {
@@ -153,17 +158,5 @@ describe('tracking game status', () => {
     // fail level 2
     gameManager.submitAnswer(getIncorrectAnswer(gameManager.generateLevel()))
     expect(gameManager.status).toBe(gameStatus.INCORRECT_ANSWER)
-  })
-
-  test('when the game is lost, the status does not represent "game ended" until the signal is given to end the game', () => {
-    gameManager.submitAnswer(gameManager.generateLevel().correctAnswer)
-    gameManager.submitAnswer(getIncorrectAnswer(gameManager.generateLevel()))
-    gameManager.submitAnswer(getIncorrectAnswer(gameManager.generateLevel()))
-    gameManager.submitAnswer(getIncorrectAnswer(gameManager.generateLevel()))
-
-    expect(gameManager.status).toBe(gameStatus.INCORRECT_ANSWER)
-
-    gameManager.handleGameEnd()
-    expect(gameManager.status).toBe(gameStatus.GAME_END)
   })
 })
